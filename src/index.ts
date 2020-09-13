@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
-import { IuseCustomHook } from './types';
+import { useEffect } from 'react';
 
-const useCustomHook:IuseCustomHook = (initialState) => {
-  const [state, setState] = useState(initialState);
-
+const useEventSubscribe = (name: string, callback: (e:CustomEventInit) => void):void => {
   useEffect(() => {
-    setState(initialState)
-  }, [initialState])
-
-  return [state, setState]
+    window.addEventListener(name, callback);
+    return () => {
+      window.removeEventListener(name, callback);
+    };
+  }, []);
 };
 
-export default useCustomHook
+export default useEventSubscribe;
